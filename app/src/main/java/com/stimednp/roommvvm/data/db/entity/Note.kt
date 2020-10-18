@@ -1,4 +1,4 @@
-package com.stimednp.roommvvm.data.db
+package com.stimednp.roommvvm.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,8 +11,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "note_table")
 data class Note (
     @PrimaryKey(autoGenerate = true)
-    private val id: Int? = null,
-    private val title: String? = null,
-    private val description: String? = null,
-    private val priority: Int? = null
+    val id: Int?,
+    val title: String?,
+    val description: String?,
+    val priority: Int?
 )
