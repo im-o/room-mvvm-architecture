@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Room MVVM</string>
+    <string name="add_note">Add Note</string>
+    <string name="title">Title</string>
+    <string name="choose_priority">Choose Priority :</string>
+    <string name="save">Save</string>
+    <string name="description">Description</string>
 </resources>
