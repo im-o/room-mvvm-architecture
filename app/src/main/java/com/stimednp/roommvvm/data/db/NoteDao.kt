@@ -30,5 +30,5 @@ interface NoteDao {
     suspend fun clearNote()
 
     @Query("DELETE FROM note_table WHERE id = :id") //you can use this too, for delete note by id.
-    suspend fun deleteById(id: Int)
+    suspend fun deleteNoteById(id: Int)
 }
