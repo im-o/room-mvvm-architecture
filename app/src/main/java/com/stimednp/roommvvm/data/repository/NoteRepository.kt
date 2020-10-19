@@ -1,8 +1,8 @@
 package com.stimednp.roommvvm.data.repository
 
 import androidx.lifecycle.LiveData
-import com.stimednp.roommvvm.data.db.entity.Note
 import com.stimednp.roommvvm.data.db.NoteDatabase
+import com.stimednp.roommvvm.data.db.entity.Note
 
 /**
  * Created by rivaldy on Oct/18/2020.
