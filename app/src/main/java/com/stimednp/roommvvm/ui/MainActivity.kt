@@ -8,6 +8,7 @@ import com.stimednp.roommvvm.R
 import com.stimednp.roommvvm.data.db.NoteDatabase
 import com.stimednp.roommvvm.data.repository.NoteRepository
 import com.stimednp.roommvvm.utils.Coroutines
+import com.stimednp.roommvvm.utils.UtilExtensions.openActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //bad practice because boilerplate code, but we'll be change this later using DI.
+        //@todo bad practice because boilerplate code, but we'll be change this later using DI.
         noteDatabase = NoteDatabase(this)
         repository = NoteRepository(noteDatabase)
         factory = NoteViewModelFactory(repository)
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initClick() {
         addNoteFAB.setOnClickListener {
-            //@todo move to form here
+            openActivity(AddNoteActivity::class.java)
         }
     }
 
