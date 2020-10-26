@@ -3,6 +3,8 @@ package com.stimednp.roommvvm.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stimednp.roommvvm.R
 import com.stimednp.roommvvm.data.db.entity.Note
@@ -13,9 +15,7 @@ import kotlinx.android.synthetic.main.item_note.view.*
  * Find me on my lol Github :D -> https://github.com/im-o
  */
 
-class NoteAdapter(private val listener: (Note) -> Unit) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
-
-    var listNotes: List<Note> = arrayListOf()
+class NoteAdapter(private val listener: (Note) -> Unit) : ListAdapter<Note, NoteAdapter.NoteViewHolder>(DiffUtilNote()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
@@ -23,13 +23,12 @@ class NoteAdapter(private val listener: (Note) -> Unit) : RecyclerView.Adapter<N
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bindItem(listNotes[position], listener)
+        val item = getItem(position)
+        holder.bindItem(item, listener)
     }
 
-    override fun getItemCount() = listNotes.size
-
     fun getNoteAt(position: Int): Note {
-        return listNotes[position]
+        return getItem(position)
     }
 
     class NoteViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
@@ -42,6 +41,16 @@ class NoteAdapter(private val listener: (Note) -> Unit) : RecyclerView.Adapter<N
             view.setOnClickListener {
                 listener(note)
             }
+        }
+    }
+
+    private class DiffUtilNote : DiffUtil.ItemCallback<Note>() {
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
+            return newItem.id == oldItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
+            return newItem == oldItem
         }
     }
 }
