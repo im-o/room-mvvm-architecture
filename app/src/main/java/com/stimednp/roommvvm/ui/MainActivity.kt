@@ -27,11 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var noteDatabase: NoteDatabase
     private lateinit var repository: NoteRepository
     private lateinit var factory: NoteViewModelFactory
-    private val noteAdapter: NoteAdapter by lazy {
-        NoteAdapter() {
-            clickCallback(it)
-        }
-    }
+    private lateinit var noteAdapter: NoteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +38,12 @@ class MainActivity : AppCompatActivity() {
         repository = NoteRepository(noteDatabase)
         factory = NoteViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[NoteViewModel::class.java]
+
+        noteAdapter = NoteAdapter() {
+            openActivity(AddNoteActivity::class.java) {
+                putParcelable(NOTE_DATA, it)
+            }
+        }
 
         initView()
         observeNotes()
@@ -64,15 +66,8 @@ class MainActivity : AppCompatActivity() {
     private fun observeNotes() {
         Coroutines.main {
             viewModel.getAllNotes().observe(this@MainActivity, {
-                noteAdapter.listNotes = it
-                noteAdapter.notifyDataSetChanged()
+                noteAdapter.submitList(it)
             })
-        }
-    }
-
-    private fun clickCallback(note: Note) {
-        openActivity(AddNoteActivity::class.java) {
-            putParcelable(NOTE_DATA, note)
         }
     }
 
