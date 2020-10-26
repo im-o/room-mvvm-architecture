@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_note.view.*
  * Find me on my lol Github :D -> https://github.com/im-o
  */
 
-class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(private val listener: (Note) -> Unit) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     var listNotes: List<Note> = arrayListOf()
 
@@ -23,7 +23,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bindItem(listNotes[position])
+        holder.bindItem(listNotes[position], listener)
     }
 
     override fun getItemCount() = listNotes.size
@@ -33,11 +33,14 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     }
 
     class NoteViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun bindItem(note: Note) {
+        fun bindItem(note: Note, listener: (Note) -> Unit) {
             view.apply {
                 titleTV.text = note.title
                 descriptionTV.text = note.description
                 priorityTV.text = note.priority.toString()
+            }
+            view.setOnClickListener {
+                listener(note)
             }
         }
     }
