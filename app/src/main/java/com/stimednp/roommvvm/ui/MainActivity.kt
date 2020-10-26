@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stimednp.roommvvm.R
 import com.stimednp.roommvvm.data.db.NoteDatabase
+import com.stimednp.roommvvm.data.db.entity.Note
 import com.stimednp.roommvvm.data.repository.NoteRepository
 import com.stimednp.roommvvm.utils.Coroutines
 import com.stimednp.roommvvm.utils.UtilExtensions.myToast
@@ -18,12 +19,18 @@ import com.stimednp.roommvvm.utils.UtilExtensions.openActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val NOTE_DATA = "NOTE_DATA"
+    }
+
     private lateinit var viewModel: NoteViewModel
     private lateinit var noteDatabase: NoteDatabase
     private lateinit var repository: NoteRepository
     private lateinit var factory: NoteViewModelFactory
     private val noteAdapter: NoteAdapter by lazy {
-        NoteAdapter()
+        NoteAdapter() {
+            clickCallback(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +70,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun clickCallback(note: Note) {
+        openActivity(AddNoteActivity::class.java) {
+            putParcelable(NOTE_DATA, note)
+        }
+    }
+
     private fun itemTouchHelperCallback(): ItemTouchHelper.SimpleCallback {
         return object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -79,7 +92,6 @@ class MainActivity : AppCompatActivity() {
                     val note = noteAdapter.getNoteAt(viewHolder.adapterPosition)
                     viewModel.deleteNote(note).also {
                         myToast(getString(R.string.success_delete))
-                        noteAdapter.notifyDataSetChanged()
                     }
                 }
             }

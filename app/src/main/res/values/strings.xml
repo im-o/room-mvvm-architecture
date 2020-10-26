@@ -9,4 +9,8 @@
     <string name="success_delete">Success delete note</string>
     <string name="success_clear">Success clear note</string>
     <string name="sure_clear_note">Are you sure, you want to delete all note?</string>
+    <string name="form_empty">Some data is empty, checked your form</string>
+    <string name="update_note">Update Note</string>
+    <string name="success_save">Success save note</string>
+    <string name="success_update">Success update note</string>
 </resources>
