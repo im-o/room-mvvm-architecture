@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.item_note.view.*
  * Find me on my lol Github :D -> https://github.com/im-o
  */
 
-class NoteAdapter(
-    private val notes: List<Note>
-) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+
+    var listNotes: List<Note> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
@@ -23,10 +23,14 @@ class NoteAdapter(
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bindItem(notes[position])
+        holder.bindItem(listNotes[position])
     }
 
-    override fun getItemCount() = notes.size
+    override fun getItemCount() = listNotes.size
+
+    fun getNoteAt(position: Int): Note {
+        return listNotes[position]
+    }
 
     class NoteViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         fun bindItem(note: Note) {
