@@ -5,4 +5,8 @@
     <string name="choose_priority">Choose Priority :</string>
     <string name="save">Save</string>
     <string name="description">Description</string>
+    <string name="clear_note">Clear Note</string>
+    <string name="success_delete">Success delete note</string>
+    <string name="success_clear">Success clear note</string>
+    <string name="sure_clear_note">Are you sure, you want to delete all note?</string>
 </resources>
