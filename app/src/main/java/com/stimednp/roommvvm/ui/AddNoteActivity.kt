@@ -7,12 +7,14 @@ import com.stimednp.roommvvm.R
 import com.stimednp.roommvvm.data.db.NoteDatabase
 import com.stimednp.roommvvm.data.db.entity.Note
 import com.stimednp.roommvvm.data.repository.NoteRepository
+import com.stimednp.roommvvm.databinding.ActivityAddNoteBinding
 import com.stimednp.roommvvm.utils.Coroutines
 import com.stimednp.roommvvm.utils.UtilExtensions.myToast
 import com.stimednp.roommvvm.utils.UtilExtensions.setTextEditable
-import kotlinx.android.synthetic.main.activity_add_note.*
 
 class AddNoteActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddNoteBinding;
+
     private lateinit var viewModel: NoteViewModel
     private lateinit var noteDatabase: NoteDatabase
     private lateinit var repository: NoteRepository
@@ -22,7 +24,8 @@ class AddNoteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_note)
+        binding = ActivityAddNoteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //@todo bad practice because boilerplate code, but we'll be change this later using DI.
         noteDatabase = NoteDatabase(this)
@@ -43,28 +46,28 @@ class AddNoteActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        priorityPicker.minValue = 1
-        priorityPicker.maxValue = 10
+        binding.priorityPicker.minValue = 1
+        binding.priorityPicker.maxValue = 10
 
         if (note != null) { //this is for set data to form and update data
-            titleET.setTextEditable(note?.title ?: "")
-            descriptionET.setTextEditable(note?.description ?: "")
-            priorityPicker.value = note?.priority ?: 1
-            saveButton.text = getString(R.string.update_note)
+            binding.titleET.setTextEditable(note?.title ?: "")
+            binding.descriptionET.setTextEditable(note?.description ?: "")
+            binding.priorityPicker.value = note?.priority ?: 1
+            binding.saveButton.text = getString(R.string.update_note)
         }
     }
 
     private fun initClick() {
-        saveButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             saveData()
         }
     }
 
     private fun saveData() {
         val id = if (note != null) note?.id else null
-        val title = titleET.text.toString().trim()
-        val desc = descriptionET.text.toString().trim()
-        val priority = priorityPicker.value
+        val title = binding.titleET.text.toString().trim()
+        val desc = binding.descriptionET.text.toString().trim()
+        val priority = binding.priorityPicker.value
 
         if (title.isEmpty() || desc.isEmpty()) {
             myToast(getString(R.string.form_empty))

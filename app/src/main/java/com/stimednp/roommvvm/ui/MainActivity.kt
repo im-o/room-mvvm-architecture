@@ -11,17 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stimednp.roommvvm.R
 import com.stimednp.roommvvm.data.db.NoteDatabase
-import com.stimednp.roommvvm.data.db.entity.Note
 import com.stimednp.roommvvm.data.repository.NoteRepository
+import com.stimednp.roommvvm.databinding.ActivityMainBinding
 import com.stimednp.roommvvm.utils.Coroutines
 import com.stimednp.roommvvm.utils.UtilExtensions.myToast
 import com.stimednp.roommvvm.utils.UtilExtensions.openActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
         const val NOTE_DATA = "NOTE_DATA"
     }
+
+    private lateinit var binding: ActivityMainBinding;
 
     private lateinit var viewModel: NoteViewModel
     private lateinit var noteDatabase: NoteDatabase
@@ -31,7 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //@todo bad practice because boilerplate code, but we'll be change this later using DI.
         noteDatabase = NoteDatabase(this)
@@ -50,17 +52,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        addNoteFAB.setOnClickListener {
+        binding.addNoteFAB.setOnClickListener {
             openActivity(AddNoteActivity::class.java)
         }
 
-        notesRV.apply {
+        binding.notesRV.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = noteAdapter
         }
 
-        ItemTouchHelper(itemTouchHelperCallback()).attachToRecyclerView(notesRV)
+        ItemTouchHelper(itemTouchHelperCallback()).attachToRecyclerView(binding.notesRV)
     }
 
     private fun observeNotes() {

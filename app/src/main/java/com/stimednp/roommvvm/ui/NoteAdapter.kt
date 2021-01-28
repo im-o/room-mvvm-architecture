@@ -1,14 +1,12 @@
 package com.stimednp.roommvvm.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.stimednp.roommvvm.R
 import com.stimednp.roommvvm.data.db.entity.Note
-import kotlinx.android.synthetic.main.item_note.view.*
+import com.stimednp.roommvvm.databinding.ItemNoteBinding
 
 /**
  * Created by rivaldy on Oct/19/2020.
@@ -18,8 +16,8 @@ import kotlinx.android.synthetic.main.item_note.view.*
 class NoteAdapter(private val listener: (Note) -> Unit) : ListAdapter<Note, NoteAdapter.NoteViewHolder>(DiffUtilNote()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
-        return NoteViewHolder(view)
+        val binding = ItemNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return NoteViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
@@ -31,14 +29,14 @@ class NoteAdapter(private val listener: (Note) -> Unit) : ListAdapter<Note, Note
         return getItem(position)
     }
 
-    class NoteViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class NoteViewHolder(private val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindItem(note: Note, listener: (Note) -> Unit) {
-            view.apply {
+            binding.apply {
                 titleTV.text = note.title
                 descriptionTV.text = note.description
                 priorityTV.text = note.priority.toString()
             }
-            view.setOnClickListener {
+            binding.root.setOnClickListener {
                 listener(note)
             }
         }
