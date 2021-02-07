@@ -1,24 +1,20 @@
 package com.stimednp.roommvvm.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.stimednp.roommvvm.R
-import com.stimednp.roommvvm.data.db.NoteDatabase
 import com.stimednp.roommvvm.data.db.entity.Note
-import com.stimednp.roommvvm.data.repository.NoteRepository
 import com.stimednp.roommvvm.databinding.ActivityAddNoteBinding
 import com.stimednp.roommvvm.utils.Coroutines
 import com.stimednp.roommvvm.utils.UtilExtensions.myToast
 import com.stimednp.roommvvm.utils.UtilExtensions.setTextEditable
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddNoteActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAddNoteBinding;
-
-    private lateinit var viewModel: NoteViewModel
-    private lateinit var noteDatabase: NoteDatabase
-    private lateinit var repository: NoteRepository
-    private lateinit var factory: NoteViewModelFactory
+    private val viewModel by viewModels<NoteViewModel>()
+    private lateinit var binding: ActivityAddNoteBinding
 
     private var note: Note? = null
 
@@ -26,13 +22,6 @@ class AddNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //@todo bad practice because boilerplate code, but we'll be change this later using DI.
-        noteDatabase = NoteDatabase(this)
-        repository = NoteRepository(noteDatabase)
-        factory = NoteViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[NoteViewModel::class.java]
-
         note = intent.extras?.getParcelable(MainActivity.NOTE_DATA)
 
         initToolbar()
